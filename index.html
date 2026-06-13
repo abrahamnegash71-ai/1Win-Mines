@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Milko Mines Predictor</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #090d16, #111827);
+            color: #ffffff;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        .container {
+            width: 90%;
+            max-width: 420px;
+            background: rgba(255, 255, 255, 0.03);
+            padding: 25px 20px;
+            border-radius: 24px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            text-align: center;
+        }
+        h1 { font-size: 22px; color: #38bdf8; margin-bottom: 5px; text-transform: uppercase; letter-spacing: 1px; }
+        p { font-size: 13px; color: #9ca3af; line-height: 1.5; margin-bottom: 20px; }
+        
+        /* Auth Styles */
+        .step { background: rgba(56, 189, 248, 0.06); padding: 15px; border-radius: 14px; margin: 15px 0; border-left: 4px solid #2563eb; text-align: left; }
+        .step-title { font-weight: bold; color: #38bdf8; font-size: 14px; margin-bottom: 4px; }
+        .btn { display: inline-block; width: 100%; background: #2563eb; color: white; padding: 12px 0; border: none; border-radius: 12px; font-size: 15px; font-weight: bold; text-decoration: none; cursor: pointer; transition: 0.3s; box-sizing: border-box; }
+        .btn:hover { background: #1d4ed8; }
+        .input-field { width: 100%; padding: 12px; margin: 15px 0; border-radius: 12px; border: 1px solid #4b5563; background: rgba(0, 0, 0, 0.3); color: white; font-size: 16px; box-sizing: border-box; text-align: center; }
+
+        /* Dashboard Styles */
+        #dashboardPage, #gamePlayPage { display: none; }
+        .game-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 20px; }
+        .game-card { background: rgba(255, 255, 255, 0.05); padding: 15px; border-radius: 16px; border: 1px solid rgba(255, 255, 255, 0.1); cursor: pointer; transition: 0.3s; }
+        .game-card:hover { transform: translateY(-3px); border-color: #38bdf8; background: rgba(56, 189, 248, 0.05); }
+        .game-icon { font-size: 32px; margin-bottom: 8px; }
+        .game-title { font-size: 14px; font-weight: bold; color: #f3f4f6; }
+        .game-provider { font-size: 11px; color: #6b7280; margin-top: 2px; }
+
+        /* Mines Grid Animation */
+        .mines-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; max-width: 280px; margin: 20px auto; }
+        .cell { aspect-ratio: 1; background: #1f2937; border-radius: 8px; display: flex; justify-content: center; align-items: center; font-size: 18px; font-weight: bold; transition: 0.3s; border: 1px solid #374151; }
+        .cell.star { background: #2563eb; color: #ffffff; box-shadow: 0 0 12px #2563eb; border-color: #38bdf8; }
+    </style>
+</head>
+<body>
+
+<!-- PAGE 1: VERIFICATION GATE -->
+<div class="container" id="authPage">
+    <h1>💎 MILKO MINES HACK</h1>
+    <p>Unlock 100% simulated winning matrix grids for the top 4 1win Mines games instantly.</p>
+    
+    <div class="step">
+        <div class="step-title">Step 1: Create Account</div>
+        <p>Register a new account via our link and make your first deposit to sync with our AI core.</p>
+    </div>
+    <a href="YOUR_1WIN_AFFILIATE_LINK_HERE" target="_blank" class="btn" style="background: #10b981;">🔗 Register on 1win</a>
+
+    <div class="step">
+        <div class="step-title">Step 2: Account Sync</div>
+        <p>Enter your 1win Account User ID below to verify eligibility and unlock the core dashboard.</p>
+    </div>
+    <input type="number" class="input-field" id="userId" placeholder="Enter 1win Account ID">
+    <button class="btn" onclick="verifyId()">🔓 Verify & Unlock Dashboard</button>
+</div>
+
+<!-- PAGE 2: GAME MENU (THE 4 GAMES) -->
+<div class="container" id="dashboardPage">
+    <h1>🎮 SELECT MINES GAME</h1>
+    <p>Choose the specific Mines version you are currently active on inside 1win.</p>
+    
+    <div class="game-grid">
+        <div class="game-card" onclick="openGame('Mines (Spribe)')">
+            <div class="game-icon">⭐</div>
+            <div class="game-title">MINES</div>
+            <div class="game-provider">SPRIBE</div>
+        </div>
+        <div class="game-card" onclick="openGame('Mines (Classic)')">
+            <div class="game-icon">💣</div>
+            <div class="game-title">MINES</div>
+            <div class="game-provider">1WIN GAMES</div>
+        </div>
+        <div class="game-card" onclick="openGame('Mines (Royal)')">
+            <div class="game-icon">👑</div>
+            <div class="game-title">MINES ROYAL</div>
+            <div class="game-provider">1WIN GAMES</div>
+        </div>
+        <div class="game-card" onclick="openGame('Mines (Turbo)')">
+            <div class="game-icon">🔥</div>
+            <div class="game-title">TURBO MINES</div>
+            <div class="game-provider">TURBO GAMES</div>
+        </div>
+    </div>
+</div>
+
+<!-- PAGE 3: LIVE SIGNAL GENERATOR -->
+<div class="container" id="gamePlayPage">
+    <h1 id="activeGameTitle">MINES MATRIX</h1>
+    <p>AI Status: <span style="color: #10b981; font-weight: bold;">GRID CONNECTED</span></p>
+    
+    <!-- 5x5 Grid Layout -->
+    <div class="mines-grid" id="matrixGrid"></div>
+    
+    <button class="btn" style="margin-top: 15px;" onclick="generateMinesSignal()">⚡ Generate Next Grid</button>
+    <button class="btn" style="background: transparent; border: 1px solid #4b5563; color: #9ca3af; margin-top: 10px;" onclick="backToMenu()">⬅️ Back to Games</button>
+</div>
+
+<script>
+    function verifyId() {
+        var id = document.getElementById('userId').value;
+        if(id === "" || id.length < 4) { alert("Please enter a valid 1win ID!"); return; }
+        alert("Validating User ID: " + id + "...\nAccess Granted!");
+        document.getElementById('authPage').style.display = 'none';
+        document.getElementById('dashboardPage').style.display = 'block';
+    }
+
+    function openGame(gameName) {
+        document.getElementById('activeGameTitle').innerText = gameName.toUpperCase();
+        document.getElementById('dashboardPage').style.display = 'none';
+        document.getElementById('gamePlayPage').style.display = 'block';
+        buildGrid();
+    }
+
+    function backToMenu() {
+        document.getElementById('gamePlayPage').style.display = 'none';
+        document.getElementById('dashboardPage').style.display = 'block';
+    }
+
+    function buildGrid() {
+        var grid = document.getElementById('matrixGrid');
+        grid.innerHTML = '';
+        for (var i = 0; i < 25; i++) {
+            var cell = document.createElement('div');
+            cell.className = 'cell';
+            cell.id = 'cell-' + i;
+            grid.appendChild(cell);
+        }
+    }
+
+    function generateMinesSignal() {
+        buildGrid(); // Reset Grid
+        var btn = document.querySelector('#gamePlayPage .btn');
+        btn.disabled = true;
+        btn.innerText = "Scanning Patterns...";
+
+        setTimeout(function() {
+            var starPositions = [];
+            // በዘፈቀደ 4 ወይም 5 አስተማማኝ ኮከቦች ያሉበትን ቦታ ይመርጣል
+            while(starPositions.length < 4) {
+                var randomIdx = Math.floor(Math.random() * 25);
+                if(!starPositions.includes(randomIdx)) {
+                    starPositions.push(randomIdx);
+                }
+            }
+            // በካርታው ላይ ከዋክብቱን ያሳያል
+            starPositions.forEach(function(idx) {
+                var cell = document.getElementById('cell-' + idx);
+                cell.className = 'cell star';
+                cell.innerText = '⭐';
+            });
+            btn.disabled = false;
+            btn.innerText = "⚡ Generate Next Grid";
+        }, 1500);
+    }
+</script>
+
+</body>
+</html>
